@@ -1,18 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Exercise List</title>
-</head>
-<body>
-    <h1>Exercise List</h1>
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-center mb-4">Exercise List</h1>
+<div class="row">
     {% for exercise_id, exercise in exercises.items() %}
-    <div style="border: 1px solid black; padding: 10px; margin: 10px;">
-        <h2>{{ exercise['client_name'] }}</h2>
-        <p>{{ exercise['description'] }}</p>
-        <p>Status: {{ exercise['status'] }}</p>
-        <p>Result: {{ exercise['result'] or 'N/A' }}</p>
-        <p>Comment: {{ exercise['comment'] or 'N/A' }}</p>
+    <div class="col-md-6">
+        <div class="exercise-card">
+            <h2>{{ exercise['client_name'] }}</h2>
+            <p><strong>Description:</strong> {{ exercise['description'] }}</p>
+            <p><strong>Status:</strong>
+                <span class="badge
+                    {% if exercise['status'] == 'PENDING' %}bg-warning{% endif %}
+                    {% if exercise['status'] == 'DONE' %}bg-success{% endif %}
+                    {% if exercise['status'] == 'MISSED' %}bg-danger{% endif %}">
+                    {{ exercise['status'] }}
+                </span>
+            </p>
+            <p><strong>Result:</strong> {{ exercise['result'] or 'N/A' }}</p>
+            <p><strong>Comment:</strong> {{ exercise['comment'] or 'N/A' }}</p>
+        </div>
     </div>
     {% endfor %}
-</body>
-</html>
+</div>
+{% endblock %}

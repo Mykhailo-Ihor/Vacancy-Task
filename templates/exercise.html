@@ -1,31 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title><!DOCTYPE html>
-<html>
-<head>
-    <title>Exercise</title>
-</head>
-<body>
-    <h1>Hello, {{ exercise['client_name'] }}!</h1>
-    <p>Description: {{ exercise['description'] }}</p>
-    <p>Due in: {{ time_to_due }} days</p>
-    <p>Status: {{ status }}</p>
-    <form method="POST">
-        <label for="result">Mark as:</label>
-        <select id="result" name="result">
-            <option value="DONE">Done</option>
-            <option value="MISSED">Missed</option>
-        </select><br><br>
-        <label for="comment">Comment:</label>
-        <textarea id="comment" name="comment"></textarea><br><br>
-        <button type="submit">Submit</button>
-    </form>
-</body>
-</html></title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="exercise-card">
+            <h1 class="text-center">Hello, {{ exercise['client_name'] }}!</h1>
+            <p><strong>Description:</strong> {{ exercise['description'] }}</p>
+            <p><strong>Due in:</strong>
+                {% if time_to_due == 0 %}
+                    Today is the due date!
+                {% elif time_to_due > 0 %}
+                    {{ time_to_due }} days left.
+                {% else %}
+                {   { -time_to_due }} days overdue.
+                {% endif %}
+            </p>
+            <p><strong>Status:</strong>
+                <span class="badge
+                    {% if status == 'PENDING' %}bg-warning{% endif %}
+                    {% if status == 'DONE' %}bg-success{% endif %}
+                    {% if status == 'MISSED' %}bg-danger{% endif %}">
+                    {{ status }}
+                </span>
+            </p>
+            <form method="POST">
+                <div class="mb-3">
+                    <label for="result" class="form-label">Mark as:</label>
+                    <select class="form-control" id="result" name="result">
+                        <option value="DONE">Done</option>
+                        <option value="MISSED">Missed</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="comment" class="form-label">Comment:</label>
+                    <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-custom w-100">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

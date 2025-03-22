@@ -7,10 +7,15 @@ app = Flask(__name__)
 exercises = {}
 
 
+from datetime import datetime, date
+
 def calculate_status(exercise):
+    today = date.today()
+    due_date = exercise['due_date'].date()
+
     if exercise['result']:
         return "DONE"
-    elif datetime.now() > exercise['due_date']:
+    elif today > due_date:
         return "MISSED"
     else:
         return "PENDING"
@@ -55,7 +60,10 @@ def view_exercise(exercise_id):
         return "Thank you for your feedback!"
 
     status = calculate_status(exercise)
-    time_to_due = (exercise['due_date'] - datetime.now()).days
+    today = date.today()
+    due_date = exercise['due_date'].date()
+    time_to_due = (due_date - today).days
+
     return render_template('exercise.html', exercise=exercise, status=status, time_to_due=time_to_due)
 
 if __name__ == '__main__':
