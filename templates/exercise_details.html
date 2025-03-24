@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="col-md-8">
+        <div class="exercise-details-card">
+            <h1 class="text-center">{{ exercise['client_name'] }}</h1>
+            <h3>Exercise Description:</h3>
+              <div class="exercise-details mb-4">
+                <div class="scrollable">
+                  <p>{{ exercise['description'] }}</p>
+                </div>
+            </div>
+
+            {% if exercise['comment'] %}
+            <div class="exercise-details mb-4">
+                <h3>Student's Comment:</h3>
+                <div class="scrollable">
+                  <p>{{ exercise['comment'] }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="mb-4">
+                <h3>Status:</h3>
+                <p>
+                    <span class="badge
+                        {% if exercise['status'] == 'PENDING' %}pending{% endif %}
+                        {% if exercise['status'] == 'DONE' %}done{% endif %}
+                        {% if exercise['status'] == 'MISSED' %}missed{% endif %}">
+                        {{ exercise['status'] }}
+                    </span>
+                </p>
+            </div>
+
+            {% if exercise['result'] %}
+            <div class="exercise-details mb-4">
+                <h3>Result:</h3>
+                <p>{{ exercise['result'] }}</p>
+            </div>
+            {% endif %}
+
+            {% if exercise['status'] == 'PENDING' %}
+            <div class="mb-4">
+                <h3>Exercise Link:</h3>
+                <div class="input-group">
+                    <input type="text" id="exercise-link" class="form-control" value="{{ exercise_link }}" readonly>
+                    <button class="btn btn-custom" onclick="copyLink()">
+                        <i class="bi bi-clipboard"></i> Copy
+                    </button>
+                </div>
+            </div>
+            {% endif %}
+
+            <a href="{{ url_for('list_exercises') }}" class="btn btn-custom">
+                <i class="bi bi-arrow-left"></i> Back to Exercises
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function copyLink() {
+        const linkInput = document.getElementById('exercise-link');
+        linkInput.select();
+        document.execCommand('copy');
+        alert('Link copied to clipboard!');
+    }
+</script>
+{% endblock %}

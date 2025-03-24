@@ -1,27 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row justify-content-center">
+<div class="d-flex justify-content-center align-items-center min-vh-100">
     <div class="col-md-6">
-        <div class="exercise-card">
+        <div class="exercise-card-student">
             <h1 class="text-center">Hello, {{ exercise['client_name'] }}!</h1>
-            <p><strong>Description:</strong> {{ exercise['description'] }}</p>
+            <div class="scrollable">
+                <p><strong>Description:</strong> {{ exercise['description'] }}</p>
+            </div>
             <p><strong>Due in:</strong>
                 {% if time_to_due == 0 %}
                     Today is the due date!
-                {% elif time_to_due > 0 %}
+                {% elif time_to_due == 1 %}
+                    {{ time_to_due }} day left.
+                {% elif time_to_due > 1 %}
                     {{ time_to_due }} days left.
                 {% else %}
-                {   { -time_to_due }} days overdue.
+                    The due date has passed.
                 {% endif %}
-            </p>
-            <p><strong>Status:</strong>
-                <span class="badge
-                    {% if status == 'PENDING' %}bg-warning{% endif %}
-                    {% if status == 'DONE' %}bg-success{% endif %}
-                    {% if status == 'MISSED' %}bg-danger{% endif %}">
-                    {{ status }}
-                </span>
             </p>
             <form method="POST">
                 <div class="mb-3">

@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="text-center mb-4">Create Exercise</h1>
-<div class="row justify-content-center">
+<div class="d-flex flex-column justify-content-center align-items-center min-vh-100">
+    <h1 class="text-center mb-4">Create Exercise</h1>
     <div class="col-md-6">
-        <form method="POST" class="exercise-card">
+        <form method="POST" class="exercise-create-card">
             <div class="mb-3">
                 <label for="client_name" class="form-label">Client Name:</label>
                 <input type="text" class="form-control" id="client_name" name="client_name" required>
@@ -15,10 +15,15 @@
             </div>
             <div class="mb-3">
                 <label for="due_date" class="form-label">Due Date:</label>
-                <input type="date" class="form-control" id="due_date" name="due_date" required>
+                <input type="date" class="form-control" id="due_date" name="due_date" min="{{ min_date }}" required>
             </div>
             <button type="submit" class="btn btn-custom w-100">Create Exercise</button>
         </form>
     </div>
-</div>
+    <div class="text-center mt-4">
+        <a href="{{ url_for('index') }}" class="btn btn-custom">
+            <i class="bi bi-house-door"></i> Return to Home Page
+        </a>
+    </div>
+</div
 {% endblock %}

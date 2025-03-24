@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="col-md-8">
+        <div class="exercise-create-card text-center">
+            <h1 class="display-4">Exercise Created!</h1>
+            <p class="lead">Share this link with your client:</p>
+
+       <div class="mb-4">
+                <h3>Client Exercise Link:</h3>
+                <div class="input-group">
+                    <input type="text" id="exercise-link" class="form-control" value="{{ exercise_link }}" readonly>
+                    <button class="btn btn-custom" onclick="copyLink()">
+                        <i class="bi bi-clipboard"></i> Copy
+                    </button>
+                </div>
+            </div>
+
+            <a href="{{ url_for('index') }}" class="btn btn-custom">
+                <i class="bi bi-house-door"></i> Return to Home Page
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function copyLink() {
+        const linkInput = document.getElementById('exercise-link');
+        linkInput.select();
+        document.execCommand('copy');
+        alert('Link copied to clipboard!');
+    }
+</script>
+{% endblock %}

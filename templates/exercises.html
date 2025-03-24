@@ -1,18 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="text-center mb-4">Exercise List</h1>
+<h1 class="text-center mb-4">Your Exercices</h1>
+{% if exercises %}
 <div class="row">
     {% for exercise_id, exercise in exercises.items() %}
     <div class="col-md-6">
-        <div class="exercise-card">
+        <div class="exercise-card" onclick="window.location.href='{{ url_for('exercise_details', exercise_id=exercise_id, token=exercise['token']) }}'">
             <h2>{{ exercise['client_name'] }}</h2>
             <p><strong>Description:</strong> {{ exercise['description'] }}</p>
             <p><strong>Status:</strong>
                 <span class="badge
-                    {% if exercise['status'] == 'PENDING' %}bg-warning{% endif %}
-                    {% if exercise['status'] == 'DONE' %}bg-success{% endif %}
-                    {% if exercise['status'] == 'MISSED' %}bg-danger{% endif %}">
+                    {% if exercise['status'] == 'PENDING' %}pending{% endif %}
+                    {% if exercise['status'] == 'DONE' %}done{% endif %}
+                    {% if exercise['status'] == 'MISSED' %}missed{% endif %}">
                     {{ exercise['status'] }}
                 </span>
             </p>
@@ -21,5 +22,26 @@
         </div>
     </div>
     {% endfor %}
+    <div class="col-md-6">
+            <div class="exercise-card add-exercise-card" onclick="window.location.href='{{ url_for('create_exercise') }}'">
+                <div class="d-flex justify-content-center align-items-center h-100">
+                    <i class="bi bi-plus-circle" style="font-size: 3rem; color: rgba(0, 0, 0, 0.5);"></i>
+                </div>
+            </div>
+        </div>
+</div>
+{% else %}
+<div class="text-center">
+            <p class="lead">No exercises have been created yet.</p>
+            <a href="{{ url_for('create_exercise') }}" class="btn btn-custom">
+                <i class="bi bi-plus-circle"></i> Create Your First Exercise
+            </a>
+        </div>
+    {% endif %}
+<div class="text-center mt-4">
+    <a href="{{ url_for('index') }}" class="btn btn-custom">
+        <i class="bi bi-house-door"></i> Return to Home Page
+    </a>
+</div>
 </div>
 {% endblock %}
