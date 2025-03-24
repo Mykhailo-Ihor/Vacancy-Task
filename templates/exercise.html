@@ -9,6 +9,7 @@
                 <p><strong>Description:</strong> {{ exercise['description'] }}</p>
             </div>
             <p><strong>Due in:</strong>
+                {{ due_date }}
                 {% if time_to_due == 0 %}
                     Today is the due date!
                 {% elif time_to_due == 1 %}
@@ -18,6 +19,7 @@
                 {% else %}
                     The due date has passed.
                 {% endif %}
+
             </p>
             <form method="POST">
                 <div class="mb-3">

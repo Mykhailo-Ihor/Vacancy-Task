@@ -47,7 +47,7 @@ def create_exercise():
         }
 
         exercise_link = f"{request.host_url}exercise/{exercise_id}/{token}"
-        return render_template('exercise_created.html', exercise_link=exercise_link)
+        return redirect(url_for('exercise_created', exercise_id=exercise_id, token=token))
 
     return render_template('create_exercise.html', min_date = date.today().isoformat())
 
@@ -77,17 +77,31 @@ def view_exercise(exercise_id,token):
     due_date = exercise['due_date'].date()
     time_to_due = (due_date - today).days
 
-    return render_template('exercise.html', exercise=exercise, status=status, time_to_due=time_to_due)
+    return render_template('exercise.html', exercise=exercise, status=status, time_to_due=time_to_due, due_date=due_date)
 
 @app.route('/exercise_details/<exercise_id>/<token>')
 def exercise_details(exercise_id, token):
     exercise = exercises.get(exercise_id)
     if not exercise or exercise.get('token') != token:
-        return "Exercise not found!", 404
+        return render_template('exercise_not_found.html'), 404
 
+    exercise['id'] = exercise_id
     exercise_link = f"{request.host_url}exercise/{exercise_id}/{token}"
-    return render_template('exercise_details.html', exercise=exercise, exercise_link=exercise_link)
+    return render_template('exercise_details.html', exercise=exercise, exercise_link=exercise_link, exercise_id = exercise_id)
 
+@app.route('/exercise_created/<exercise_id>/<token>')
+def exercise_created(exercise_id, token):
+    exercise_link = f"{request.host_url}exercise/{exercise_id}/{token}"
+    return render_template('exercise_created.html', exercise_link=exercise_link)
+
+
+@app.route('/delete_exercise/<exercise_id>', methods=['POST'])
+def delete_exercise(exercise_id):
+    if exercise_id in exercises:
+        del exercises[exercise_id]
+        return redirect(url_for('list_exercises'))
+
+    return render_template('exercise_not_found.html'), 404
 
 if __name__ == '__main__':
     app.run(debug=True)

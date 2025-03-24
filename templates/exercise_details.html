@@ -6,7 +6,7 @@
         <div class="exercise-details-card">
             <h1 class="text-center">{{ exercise['client_name'] }}</h1>
             <h3>Exercise Description:</h3>
-              <div class="exercise-details mb-4">
+            <div class="exercise-details mb-4">
                 <div class="scrollable">
                   <p>{{ exercise['description'] }}</p>
                 </div>
@@ -35,7 +35,7 @@
 
             {% if exercise['result'] %}
             <div class="exercise-details mb-4">
-                <h3>Result:</h3>
+                <h3>Marked as:</h3>
                 <p>{{ exercise['result'] }}</p>
             </div>
             {% endif %}
@@ -51,10 +51,19 @@
                 </div>
             </div>
             {% endif %}
-
-            <a href="{{ url_for('list_exercises') }}" class="btn btn-custom">
-                <i class="bi bi-arrow-left"></i> Back to Exercises
-            </a>
+            <div class="position-relative" style="min-height: 50px;">
+                <div class="position-absolute bottom-0 start-0">
+                    <a href="{{ url_for('list_exercises') }}" class="btn btn-custom ">
+                        <i class="bi bi-arrow-left"></i> Back to Exercises
+                    </a>
+                </div>
+                    <form action="{{ url_for('delete_exercise', exercise_id=exercise['id']) }}" method="POST" class="position-absolute bottom-0 end-0">
+                        <input type="hidden" name="token" value="{{ exercise['token'] }}">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this exercise?');">
+                            <i class="bi bi-trash"></i> Delete Exercise
+                        </button>
+                    </form>
+            </div>
         </div>
     </div>
 </div>
